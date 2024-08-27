@@ -34,7 +34,7 @@ private class SoundHolder(private val binding: ListItemSoundBinding):
 
 private class SoundAdapter : RecyclerView.Adapter<SoundHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SoundHolder {
-        val layoutInflater = LayoutInflater.from(parent.context) // Получаем LayoutInflater из контекста родителя
+        val layoutInflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ListItemSoundBinding>(
             layoutInflater,
             R.layout.list_item_sound, parent, false
@@ -44,10 +44,10 @@ private class SoundAdapter : RecyclerView.Adapter<SoundHolder>() {
 
 
     override fun onBindViewHolder(holder: SoundHolder, position: Int) {
-        // Здесь можно привязывать данные к элементам списка
+
     }
 
-    override fun getItemCount() = 0 // Верните реальное количество элементов
+    override fun getItemCount() = 0
 }
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
