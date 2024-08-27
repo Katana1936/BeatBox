@@ -17,26 +17,26 @@ import com.example.beatbox.ui.theme.BeatBoxTheme
 
 class MainActivity : AppCompatActivity() {
     private lateinit var beatBox: BeatBox
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         beatBox = BeatBox(assets)
-        beatBox.loadSounds()
-
 
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(context, 3)
-            adapter = SoundAdapter()
+            adapter = SoundAdapter(beatBox.sounds)
         }
     }
 }
 
-private class SoundHolder(private val binding: ListItemSoundBinding):
-    RecyclerView.ViewHolder(binding.root){
+private class SoundHolder(private val binding: ListItemSoundBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
 }
-private inner class SoundAdapter(private val sounds: List<Sound>) : RecyclerView.Adapter<SoundHolder>() {
+
+private class SoundAdapter(private val sounds: List<Sound>) : RecyclerView.Adapter<SoundHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SoundHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ListItemSoundBinding>(
@@ -46,25 +46,23 @@ private inner class SoundAdapter(private val sounds: List<Sound>) : RecyclerView
         return SoundHolder(binding)
     }
 
-
     override fun onBindViewHolder(holder: SoundHolder, position: Int) {
-
+        // Здесь можно связать данные с элементами интерфейса
     }
 
     override fun getItemCount() = sounds.size
 }
+
+
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun greeting(name: String, modifier: Modifier = Modifier) {
+    Text(text = "Hello $name!", modifier = modifier)
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun greetingPreview() {
     BeatBoxTheme {
-        Greeting("Android")
+        greeting("Android")
     }
 }
