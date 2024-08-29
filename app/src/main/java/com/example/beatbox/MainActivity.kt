@@ -47,7 +47,7 @@ private class SoundAdapter(private val sounds: List<Sound>) : RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: SoundHolder, position: Int) {
-        // Здесь можно связать данные с элементами интерфейса
+
     }
 
     override fun getItemCount() = sounds.size
