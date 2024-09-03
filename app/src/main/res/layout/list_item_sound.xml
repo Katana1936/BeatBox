@@ -2,6 +2,11 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.beatbox.SoundViewModel" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,6 +18,7 @@
             android:id="@+id/soundButton"
             android:layout_width="match_parent"
             android:layout_height="120dp"
+            android:text="@{viewModel.title}"
             tools:text="Sound name" />
 
     </LinearLayout>
