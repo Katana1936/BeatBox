@@ -4,16 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.beatbox.databinding.ActivityMainBinding
 import com.example.beatbox.databinding.ListItemSoundBinding
-import com.example.beatbox.ui.theme.BeatBoxTheme
 
 class MainActivity : AppCompatActivity() {
     private lateinit var beatBox: BeatBox
@@ -26,43 +21,42 @@ class MainActivity : AppCompatActivity() {
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(context, 3)
-            adapter = SoundAdapter(beatBox.sounds)
+            adapter = SoundAdapter(beatBox.sounds, beatBox)
         }
     }
-}
 
-private class SoundHolder(private val binding: ListItemSoundBinding) :
-    RecyclerView.ViewHolder(binding.root) {
+    private inner class SoundHolder(private val binding: ListItemSoundBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-}
+        init {
+            binding.viewModel = SoundViewModel(beatBox)
+        }
 
-private class SoundAdapter(private val sounds: List<Sound>) : RecyclerView.Adapter<SoundHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SoundHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<ListItemSoundBinding>(
-            layoutInflater,
-            R.layout.list_item_sound, parent, false
-        )
-        return SoundHolder(binding)
+        fun bind(sound: Sound) {
+            binding.apply {
+                viewModel?.sound = sound
+                executePendingBindings()
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: SoundHolder, position: Int) {
+    private inner class SoundAdapter(private val sounds: List<Sound>, private val beatBox: BeatBox) :
+        RecyclerView.Adapter<SoundHolder>() {
 
-    }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SoundHolder {
+            val layoutInflater = LayoutInflater.from(parent.context)
+            val binding: ListItemSoundBinding = DataBindingUtil.inflate(
+                layoutInflater,
+                R.layout.list_item_sound, parent, false
+            )
+            return SoundHolder(binding)
+        }
 
-    override fun getItemCount() = sounds.size
-}
+        override fun onBindViewHolder(holder: SoundHolder, position: Int) {
+            val sound = sounds[position]
+            holder.bind(sound)
+        }
 
-
-@Composable
-fun greeting(name: String, modifier: Modifier = Modifier) {
-    Text(text = "Hello $name!", modifier = modifier)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun greetingPreview() {
-    BeatBoxTheme {
-        greeting("Android")
+        override fun getItemCount() = sounds.size
     }
 }

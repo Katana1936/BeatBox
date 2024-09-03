@@ -1,6 +1,6 @@
 package com.example.beatbox
 
-class SoundViewModel {
+class SoundViewModel(private val beatBox: BeatBox) {
     var sound: Sound? = null
         set(sound) {
             field = sound
@@ -8,4 +8,10 @@ class SoundViewModel {
 
     val title: String?
         get() = sound?.name
+
+    fun playSound() {
+        sound?.let {
+            beatBox.play(it)
+        }
+    }
 }
