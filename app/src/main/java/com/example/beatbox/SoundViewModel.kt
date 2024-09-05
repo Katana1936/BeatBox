@@ -1,15 +1,24 @@
 package com.example.beatbox
 
-class SoundViewModel(private val beatBox: BeatBox) {
+
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
+import com.example.beatbox.BR
+import com.example.beatbox.Sound
+
+class SoundViewModel(private val beatBox: BeatBox) : BaseObservable() {
+
     var sound: Sound? = null
-        set(sound) {
-            field = sound
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.title)
         }
 
+    @get:Bindable
     val title: String?
         get() = sound?.name
 
-    fun playSound() {
+    fun onButtonClicked() {
         sound?.let {
             beatBox.play(it)
         }

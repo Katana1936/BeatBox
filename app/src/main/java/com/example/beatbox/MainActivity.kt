@@ -1,5 +1,6 @@
 package com.example.beatbox
 
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.beatbox.SoundViewModel
 import com.example.beatbox.databinding.ActivityMainBinding
 import com.example.beatbox.databinding.ListItemSoundBinding
 
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private inner class SoundAdapter(private val sounds: List<Sound>, private val beatBox: BeatBox) :
         RecyclerView.Adapter<SoundHolder>() {

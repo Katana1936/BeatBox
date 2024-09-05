@@ -1,14 +1,7 @@
-package com.example.beatbox
-
-import android.content.res.AssetManager
-import android.util.Log
-
-
-
-private const val TAG = "BeatBox"
-private const val SOUNDS_FOLDER = "sample_sounds"
+import android.media.SoundPool
 
 class BeatBox(private val assets: AssetManager) {
+    private val soundPool = SoundPool.Builder().setMaxStreams(5).build()
     val sounds: List<Sound>
 
     init {
@@ -28,12 +21,29 @@ class BeatBox(private val assets: AssetManager) {
         soundNames.forEach { filename ->
             val assetPath = "$SOUNDS_FOLDER/$filename"
             val sound = Sound(assetPath)
+            sound.soundId = loadSound(sound)
             sounds.add(sound)
         }
         return sounds
     }
 
-    fun play(sound: Sound) {
+    private fun loadSound(sound: Sound): Int? {
+        try {
+            val afd = assets.openFd(sound.assetPath)
+            return soundPool.load(afd, 1)
+        } catch (e: Exception) {
+            Log.e(TAG, "Could not load sound ${sound.assetPath}", e)
+            return null
+        }
+    }
 
+    fun play(sound: Sound) {
+        sound.soundId?.let {
+            soundPool.play(it, 1.0f, 1.0f, 1, 0, 1.0f)
+        }
+    }
+
+    fun release() {
+        soundPool.release()
     }
 }
